@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import { profile } from '../data/profile';
+---
+
+<Base title={`Page not found · ${profile.name}`} description="This page doesn't exist.">
+  <main id="content" class="not-found">
+    <p class="code mono">404</p>
+    <h1>This page doesn't exist</h1>
+    <p><a href="/">Back to {profile.shortName}'s portfolio</a></p>
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 100vh;
+    max-width: var(--content);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .code {
+    color: var(--warm);
+    font-size: 1.1rem;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+</style>

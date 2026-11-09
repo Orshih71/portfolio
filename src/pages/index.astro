@@ -1,0 +1,405 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import bay from '../assets/bat-bay.jpg';
+import { profile, impact, work, experience, education } from '../data/profile';
+
+const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profile.location}. ${profile.tagline}`;
+---
+
+<Base title={`${profile.name} · ${profile.title}`} description={description}>
+  <div class="page">
+    <Sidebar />
+
+    <main id="content">
+      <ul class="impact" aria-label="Impact at a glance">
+        {
+          impact.map((item) => (
+            <li>
+              <span class="impact-value mono">{item.value}</span>
+              <span class="impact-label">{item.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <section id="work" aria-labelledby="work-heading">
+        <h2 id="work-heading" class="section-label">Selected work</h2>
+        <ol class="work">
+          {
+            work.map((w) => (
+              <li class="card">
+                <h3 class="card-title">{w.title}</h3>
+                <dl class="card-body">
+                  <dt>Problem</dt>
+                  <dd>{w.problem}</dd>
+                  <dt>What I built</dt>
+                  <dd>{w.built}</dd>
+                  <dt>Result</dt>
+                  <dd class="result">{w.result}</dd>
+                </dl>
+                <ul class="tags" aria-label="Technologies">
+                  {w.tags.map((t) => (
+                    <li>{t}</li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section id="experience" aria-labelledby="experience-heading">
+        <h2 id="experience-heading" class="section-label">Experience</h2>
+        <ol class="roles">
+          {
+            experience.map((r) => (
+              <li class="role">
+                <p class="role-dates mono">{r.dates}</p>
+                <div>
+                  <h3 class="role-title">
+                    {r.title} <span class="role-company">· {r.company}</span>
+                  </h3>
+                  <p class="role-place">{r.place}</p>
+                  <p class="role-summary">{r.summary}</p>
+                  <ul class="tags" aria-label="Technologies">
+                    {r.tags.map((t) => (
+                      <li>{t}</li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        <h3 class="subhead">Education</h3>
+        <ul class="education">
+          {
+            education.map((e) => (
+              <li>
+                <span>
+                  <strong>{e.degree}</strong>, {e.school}
+                </span>
+                <span class="mono role-dates">{e.dates}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <p class="more">
+          <a href={profile.resume} download>Full resume (PDF)</a>
+        </p>
+      </section>
+
+      <section id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading" class="section-label">About</h2>
+        <figure class="photo">
+          <Image
+            src={bay}
+            alt={`${profile.shortName} on the San Francisco Bay at dusk, with the city skyline behind`}
+            widths={[640, 960, 1400]}
+            sizes="(min-width: 1024px) 640px, 100vw"
+          />
+        </figure>
+        <div class="prose">
+          <p>
+            I'm {profile.shortName}. I started my career in Ulaanbaatar, Mongolia, building web apps
+            and ERP systems at Asterisk Technologies while finishing a software engineering degree at
+            the National University of Mongolia. I then built banking and credit-scoring software at
+            Trade and Development Bank.
+          </p>
+          <p>
+            In 2019 I moved to Fairfield, Iowa, for a master's in computer science, and in 2020 I
+            joined eBay. Over six years there I grew from Software Engineer 2 to Member of Technical
+            Staff, working on the backend for category, search-landing and product pages.
+          </p>
+          <p>
+            The work I like most is where scale meets the shopper, like a latency budget, an A/B
+            test, or a migration that has to land without anyone noticing. Lately that includes building AI
+            agents into how code gets shipped.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" class="section-label">Contact</h2>
+        <p class="contact-lead">
+          I'm looking for my next senior software engineer, full-stack or AI platform role.
+        </p>
+        <p>
+          <a class="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a>
+        </p>
+      </section>
+
+      <footer class="footer">
+        <p>Built with Astro. Set in Instrument Serif and Geist.</p>
+      </footer>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: var(--content);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .page {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 4rem;
+      padding: 0 3rem;
+    }
+
+    main {
+      padding: 5rem 0;
+    }
+  }
+
+  section {
+    padding-top: 4.5rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-label {
+    margin-bottom: 1.75rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Impact strip */
+  .impact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .impact {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .impact li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+    background: var(--card);
+    border-radius: var(--radius);
+  }
+
+  .impact-value {
+    color: var(--warm);
+    font-size: 1.4rem;
+    line-height: 1.1;
+  }
+
+  .impact-label {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  /* Work cards */
+  .work {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: background 0.2s ease;
+  }
+
+  .card:hover {
+    background: var(--card);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.15;
+  }
+
+  .card-body {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 0.5rem 1rem;
+    margin: 1rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .card-body dt {
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding-top: 0.15rem;
+  }
+
+  .card-body dd {
+    margin: 0;
+  }
+
+  .card-body .result {
+    color: var(--warm);
+    font-weight: 500;
+  }
+
+  @media (max-width: 520px) {
+    .card-body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.1rem;
+    }
+
+    .card-body dd {
+      margin-bottom: 0.6rem;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+
+  .tags li {
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .card:hover .tags li {
+    background: var(--bg);
+  }
+
+  /* Experience */
+  .roles {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .role {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .role {
+      grid-template-columns: 8rem minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  .role-dates {
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding-top: 0.2rem;
+  }
+
+  .role-title {
+    font-size: 1.05rem;
+  }
+
+  .role-company {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .role-place {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .role-summary {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .subhead {
+    margin: 3rem 0 1rem;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.6rem;
+  }
+
+  .education li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+
+  .education strong {
+    font-weight: 500;
+  }
+
+  .more {
+    margin-top: 1.75rem;
+    font-weight: 500;
+  }
+
+  /* About */
+  .photo {
+    margin: 0 0 1.75rem;
+  }
+
+  .photo img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.05rem;
+  }
+
+  /* Contact */
+  .contact-lead {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-email {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .footer {
+    margin-top: 5rem;
+    padding: 2rem 0 3rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+</style>

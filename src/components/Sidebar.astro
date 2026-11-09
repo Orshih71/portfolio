@@ -1,0 +1,196 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/bat-avatar.jpg';
+import { profile } from '../data/profile';
+
+const nav = [
+  { id: 'work', label: 'Work' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'about', label: 'About' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<header class="sidebar">
+  <div>
+    <Image
+      src={avatar}
+      alt={`Portrait of ${profile.shortName}`}
+      width={112}
+      height={112}
+      densities={[1, 2]}
+      loading="eager"
+      class="avatar"
+    />
+    <h1 class="name">{profile.name}</h1>
+    <p class="title">{profile.title} <span aria-hidden="true">·</span> {profile.focus}</p>
+    <p class="tagline">{profile.tagline}</p>
+
+    <nav class="nav" aria-label="Sections">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={`#${item.id}`} data-nav={item.id}>
+                <span class="nav-line" aria-hidden="true" />
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="actions">
+    <a class="button" href={profile.resume} download>Download resume</a>
+    <ul class="links">
+      <li><a href={profile.links.github} rel="me">GitHub</a></li>
+      <li><a href={profile.links.linkedin} rel="me">LinkedIn</a></li>
+      <li><a href={`mailto:${profile.email}`}>Email</a></li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  // Highlight the nav item for whichever section is in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav]');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        links.forEach((link) =>
+          link.toggleAttribute('aria-current', link.dataset.nav === entry.target.id),
+        );
+      }
+    },
+    { rootMargin: '-35% 0px -60% 0px' },
+  );
+  document.querySelectorAll('main section[id]').forEach((s) => observer.observe(s));
+</script>
+
+<style>
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+    padding: 3rem 0 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 5rem 0 4rem;
+    }
+  }
+
+  .avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+
+  .name {
+    margin-top: 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  .title {
+    margin-top: 0.75rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .tagline {
+    margin-top: 1.25rem;
+    max-width: 22rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .nav {
+    display: none;
+    margin-top: 3.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .nav {
+      display: block;
+    }
+  }
+
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-line {
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.2s ease;
+  }
+
+  .nav a:hover,
+  .nav a[aria-current] {
+    color: var(--text);
+  }
+
+  .nav a:hover .nav-line,
+  .nav a[aria-current] .nav-line {
+    width: 4rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 1.5rem;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .button:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .links {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .links a {
+    color: var(--muted);
+  }
+
+  .links a:hover {
+    color: var(--text);
+  }
+</style>

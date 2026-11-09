@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bat-portfolio",
+  "compatibility_date": "2026-11-09",
+  // Static site: no Worker code, Cloudflare serves the Astro build output directly.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
