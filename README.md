@@ -1,6 +1,6 @@
 # Bat-Orshikh Baatar · Portfolio
 
-Personal portfolio site. Built with [Astro](https://astro.build), deployed on Cloudflare Workers as static assets.
+Live at [batbaatar.com](https://batbaatar.com). Built with [Astro](https://astro.build), deployed on Cloudflare Workers as static assets.
 
 ## Commands
 
