@@ -2,6 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "bat-portfolio",
   "compatibility_date": "2026-11-09",
+  // Serve at bat-portfolio.<account>.workers.dev, and give each branch its own preview URL.
+  "workers_dev": true,
+  "preview_urls": true,
   // Static site: no Worker code, Cloudflare serves the Astro build output directly.
   "assets": {
     "directory": "./dist",
