@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import type { Logo } from '../data/profile';
+
+interface Props {
+  logo: Logo;
+}
+
+const { logo } = Astro.props;
+---
+
+{
+  'monogram' in logo ? (
+    <span class="tile monogram" aria-hidden="true">
+      {logo.monogram}
+    </span>
+  ) : (
+    <span class={logo.dark ? 'tile dark' : 'tile'} aria-hidden="true">
+      <Image src={logo.src} alt="" width={64} height={64} />
+    </span>
+  )
+}
+
+<style>
+  /* Logos sit on a fixed white tile so their brand colors read the same in light and dark mode. */
+  .tile {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 7px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .tile.dark {
+    background: #15202b;
+  }
+
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .monogram {
+    background: var(--card);
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+</style>

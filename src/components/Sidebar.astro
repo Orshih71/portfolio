@@ -4,10 +4,9 @@ import avatar from '../assets/bat-avatar.jpg';
 import { profile } from '../data/profile';
 
 const nav = [
-  { id: 'work', label: 'Work' },
+  { id: 'projects', label: 'Projects' },
   { id: 'experience', label: 'Experience' },
   { id: 'about', label: 'About' },
-  { id: 'contact', label: 'Contact' },
 ];
 ---
 
@@ -26,6 +25,15 @@ const nav = [
     <p class="title">{profile.title} <span aria-hidden="true">·</span> {profile.focus}</p>
     <p class="tagline">{profile.tagline}</p>
 
+    <p class="availability">
+      <span class="dot" aria-hidden="true"></span>
+      {profile.availability}
+    </p>
+    <div class="cta">
+      <a class="button primary" href={`mailto:${profile.email}`}>Email me</a>
+      <a class="button" href={profile.resume} download>Download resume</a>
+    </div>
+
     <nav class="nav" aria-label="Sections">
       <ul>
         {
@@ -42,14 +50,11 @@ const nav = [
     </nav>
   </div>
 
-  <div class="actions">
-    <a class="button" href={profile.resume} download>Download resume</a>
-    <ul class="links">
-      <li><a href={profile.links.github} rel="me">GitHub</a></li>
-      <li><a href={profile.links.linkedin} rel="me">LinkedIn</a></li>
-      <li><a href={`mailto:${profile.email}`}>Email</a></li>
-    </ul>
-  </div>
+  <ul class="links">
+    <li><a href={profile.links.github} rel="me">GitHub</a></li>
+    <li><a href={profile.links.linkedin} rel="me">LinkedIn</a></li>
+    <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+  </ul>
 </header>
 
 <script>
@@ -83,7 +88,7 @@ const nav = [
       position: sticky;
       top: 0;
       height: 100vh;
-      padding: 5rem 0 4rem;
+      padding: 4rem 0 3rem;
     }
   }
 
@@ -119,7 +124,7 @@ const nav = [
 
   .nav {
     display: none;
-    margin-top: 3.5rem;
+    margin-top: 2.5rem;
   }
 
   @media (min-width: 1024px) {
@@ -158,11 +163,32 @@ const nav = [
     width: 4rem;
   }
 
-  .actions {
+  .availability {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    max-width: 22rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .cta {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 1.25rem 1.5rem;
+    gap: 0.75rem;
+    margin-top: 1rem;
   }
 
   .button {
@@ -175,14 +201,21 @@ const nav = [
     text-decoration: none;
   }
 
-  .button:hover {
+  .button:hover,
+  .button.primary {
     background: var(--accent);
     color: var(--bg);
   }
 
+  .button.primary:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+
   .links {
     display: flex;
-    gap: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
     font-size: 0.9rem;
   }
 

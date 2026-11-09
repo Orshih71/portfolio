@@ -8,6 +8,7 @@
   --muted: #5b6673;
   --accent: #1f4e79;
   --warm: #b5532a;
+  --ok: #2e8b57;
   --border: rgb(21 32 43 / 0.12);
 
   --font-display: 'Instrument Serif', Georgia, serif;
@@ -28,6 +29,7 @@
     --muted: #9aa6b2;
     --accent: #8db8e8;
     --warm: #f0a27a;
+    --ok: #5fd18f;
     --border: rgb(232 236 241 / 0.12);
   }
 }
@@ -66,7 +68,8 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   margin: 0;
   font-weight: 500;
   line-height: 1.15;

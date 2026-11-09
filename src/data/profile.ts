@@ -1,6 +1,11 @@
 // Everything here comes from the public resume. Nothing internal to eBay
 // (service names, unpublished metrics, ticket details) belongs on this site.
 
+import ebayLogo from '../assets/logos/ebay.svg';
+import tdbLogo from '../assets/logos/tdb.png';
+import miuLogo from '../assets/logos/miu.svg';
+import numLogo from '../assets/logos/num.png';
+
 export const profile = {
   name: 'Bat-Orshikh Baatar',
   shortName: 'Bat',
@@ -8,6 +13,7 @@ export const profile = {
   focus: 'Java and distributed systems',
   tagline:
     'I build backend services for high-traffic e-commerce, including eBay category pages averaging over 100 million hits a day.',
+  availability: 'Open to senior software engineer, full-stack and AI platform roles',
   location: 'San Jose, California',
   email: 'bat.orshikh.baatar@gmail.com',
   resume: '/Bat-Orshikh-Baatar-Resume.pdf',
@@ -80,71 +86,97 @@ export const work: Work[] = [
   },
 ];
 
+// A logo is either an imported image or, when no official logo exists, a monogram letter.
+// `dark` puts a light-colored logo on a dark tile.
+export type Logo = { src: ImageMetadata; dark?: boolean } | { monogram: string };
+
 export type Role = {
   dates: string;
   title: string;
-  company: string;
-  place: string;
   summary: string;
   tags: string[];
 };
 
-export const experience: Role[] = [
+export type Company = {
+  company: string;
+  place: string;
+  dates: string;
+  logo: Logo;
+  roles: Role[];
+};
+
+export const experience: Company[] = [
   {
-    dates: '2025 — 2026',
-    title: 'Member of Technical Staff 1',
     company: 'eBay',
     place: 'San Jose, CA',
-    summary:
-      'Migrated the category-page listings grid to a GraphQL page platform across 10+ sites, built embedding-similarity retrieval for review highlights at a 99.75% SLO, and designed price ranges for trading-card variants that lifted conversion about 16%.',
-    tags: ['Java', 'Spring Boot', 'GraphQL', 'Kubernetes', 'Claude Code'],
+    dates: '2020 — 2026',
+    logo: { src: ebayLogo },
+    roles: [
+      {
+        dates: '2025 — 2026',
+        title: 'Member of Technical Staff 1',
+        summary:
+          'Migrated the category-page listings grid to a GraphQL page platform across 10+ sites, built embedding-similarity retrieval for review highlights at a 99.75% SLO, and designed price ranges for trading-card variants that lifted conversion about 16%.',
+        tags: ['Java', 'Spring Boot', 'GraphQL', 'Kubernetes', 'Claude Code'],
+      },
+      {
+        dates: '2023 — 2025',
+        title: 'Software Engineer 3',
+        summary:
+          'Led the backend for an ads test that raised ads revenue about 5%, moved a monolithic category-page backend onto a shared listings microservice, and delivered EU Digital Services Act compliance on time.',
+        tags: ['Java', 'Netflix DGS', 'GraphQL', 'JMeter'],
+      },
+      {
+        dates: '2020 — 2023',
+        title: 'Software Engineer 2',
+        summary:
+          'Launched sticky filter chips (+18.07% GMB), more than doubled filter usage on eBay Motors, and owned about 20 biweekly backend releases end to end.',
+        tags: ['Java', 'Spring Boot', 'Python', 'MarkoJS'],
+      },
+    ],
   },
   {
-    dates: '2023 — 2025',
-    title: 'Software Engineer 3',
-    company: 'eBay',
-    place: 'San Jose, CA',
-    summary:
-      'Led the backend for an ads test that raised ads revenue about 5%, moved a monolithic category-page backend onto a shared listings microservice, and delivered EU Digital Services Act compliance on time.',
-    tags: ['Java', 'Netflix DGS', 'GraphQL', 'JMeter'],
-  },
-  {
-    dates: '2020 — 2023',
-    title: 'Software Engineer 2',
-    company: 'eBay',
-    place: 'San Jose, CA',
-    summary:
-      'Launched sticky filter chips (+18.07% GMB), more than doubled filter usage on eBay Motors, and owned about 20 biweekly backend releases end to end.',
-    tags: ['Java', 'Spring Boot', 'Python', 'MarkoJS'],
-  },
-  {
-    dates: '2019',
-    title: 'Software Engineer',
     company: 'Trade and Development Bank',
     place: 'Ulaanbaatar, Mongolia',
-    summary:
-      'Built backend and frontend features for internal banking systems and a credit-scoring system.',
-    tags: ['Spring Boot', 'AngularJS', 'PHP'],
+    dates: '2019',
+    logo: { src: tdbLogo },
+    roles: [
+      {
+        dates: '2019',
+        title: 'Software Engineer',
+        summary:
+          'Built backend and frontend features for internal banking systems and a credit-scoring system.',
+        tags: ['Spring Boot', 'AngularJS', 'PHP'],
+      },
+    ],
   },
   {
-    dates: '2017 — 2019',
-    title: 'Full Stack Developer',
     company: 'Asterisk Technologies',
     place: 'Ulaanbaatar, Mongolia',
-    summary: 'Built and supported web applications and ERP projects for clients.',
-    tags: ['Python', 'JavaScript'],
+    dates: '2017 — 2019',
+    logo: { monogram: 'A' },
+    roles: [
+      {
+        dates: '2017 — 2019',
+        title: 'Full Stack Developer',
+        summary: 'Built and supported web applications and ERP projects for clients.',
+        tags: ['Python', 'JavaScript'],
+      },
+    ],
   },
 ];
 
-export const education = [
+export const education: { degree: string; school: string; dates: string; logo: Logo }[] = [
   {
     degree: "Master's, Computer Science",
     school: 'Maharishi University of Management, Iowa',
     dates: '2019 — 2021',
+    logo: { src: miuLogo, dark: true },
   },
   {
     degree: "Bachelor's, Software Engineering",
     school: 'National University of Mongolia',
     dates: '2014 — 2018',
+    logo: { src: numLogo },
   },
 ];

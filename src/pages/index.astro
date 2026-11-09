@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Sidebar from '../components/Sidebar.astro';
+import LogoTile from '../components/LogoTile.astro';
 import bay from '../assets/bat-bay.jpg';
 import { profile, impact, work, experience, education } from '../data/profile';
 
@@ -24,8 +25,8 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
         }
       </ul>
 
-      <section id="work" aria-labelledby="work-heading">
-        <h2 id="work-heading" class="section-label">Selected work</h2>
+      <section id="projects" aria-labelledby="projects-heading">
+        <h2 id="projects-heading" class="section-label">Key projects</h2>
         <ol class="work">
           {
             work.map((w) => (
@@ -52,22 +53,32 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
 
       <section id="experience" aria-labelledby="experience-heading">
         <h2 id="experience-heading" class="section-label">Experience</h2>
-        <ol class="roles">
+        <ol class="companies">
           {
-            experience.map((r) => (
-              <li class="role">
-                <p class="role-dates mono">{r.dates}</p>
-                <div>
-                  <h3 class="role-title">
-                    {r.title} <span class="role-company">· {r.company}</span>
-                  </h3>
-                  <p class="role-place">{r.place}</p>
-                  <p class="role-summary">{r.summary}</p>
-                  <ul class="tags" aria-label="Technologies">
-                    {r.tags.map((t) => (
-                      <li>{t}</li>
+            experience.map((c) => (
+              <li class="company">
+                <LogoTile logo={c.logo} />
+                <div class="company-body">
+                  <h3 class="company-name">{c.company}</h3>
+                  <p class="company-meta">
+                    {c.place} <span aria-hidden="true">·</span> <span class="mono">{c.dates}</span>
+                  </p>
+                  <ol class={c.roles.length > 1 ? 'roles timeline' : 'roles'}>
+                    {c.roles.map((r) => (
+                      <li class="role">
+                        <div class="role-head">
+                          <h4 class="role-title">{r.title}</h4>
+                          {c.roles.length > 1 && <span class="role-dates mono">{r.dates}</span>}
+                        </div>
+                        <p class="role-summary">{r.summary}</p>
+                        <ul class="tags" aria-label="Technologies">
+                          {r.tags.map((t) => (
+                            <li>{t}</li>
+                          ))}
+                        </ul>
+                      </li>
                     ))}
-                  </ul>
+                  </ol>
                 </div>
               </li>
             ))
@@ -79,18 +90,17 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
           {
             education.map((e) => (
               <li>
-                <span>
-                  <strong>{e.degree}</strong>, {e.school}
-                </span>
-                <span class="mono role-dates">{e.dates}</span>
+                <LogoTile logo={e.logo} />
+                <div class="edu-body">
+                  <p class="edu-degree">{e.degree}</p>
+                  <p class="company-meta">
+                    {e.school} <span aria-hidden="true">·</span> <span class="mono">{e.dates}</span>
+                  </p>
+                </div>
               </li>
             ))
           }
         </ul>
-
-        <p class="more">
-          <a href={profile.resume} download>Full resume (PDF)</a>
-        </p>
       </section>
 
       <section id="about" aria-labelledby="about-heading">
@@ -121,16 +131,6 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
             agents into how code gets shipped.
           </p>
         </div>
-      </section>
-
-      <section id="contact" aria-labelledby="contact-heading">
-        <h2 id="contact-heading" class="section-label">Contact</h2>
-        <p class="contact-lead">
-          I'm looking for my next senior software engineer, full-stack or AI platform role.
-        </p>
-        <p>
-          <a class="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a>
-        </p>
       </section>
 
       <footer class="footer">
@@ -290,76 +290,117 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
     background: var(--bg);
   }
 
-  /* Experience */
+  /* Experience: one block per company, roles listed beneath it */
+  .companies,
   .roles {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .role {
-    display: grid;
-    gap: 0.25rem;
+  .companies {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
   }
 
-  @media (min-width: 640px) {
-    .role {
-      grid-template-columns: 8rem minmax(0, 1fr);
-      gap: 1.5rem;
-    }
+  .company,
+  .education li {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .company-name {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  .company-meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .company-meta .mono {
+    font-size: 0.8rem;
+  }
+
+  .roles {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  /* Several roles at one company read as a progression, joined by a line. */
+  .roles.timeline .role {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .roles.timeline .role::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-3px);
+  }
+
+  .roles.timeline .role:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.15rem;
+    bottom: -1.5rem;
+    width: 1px;
+    background: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.1rem 1rem;
+  }
+
+  .role-title {
+    font-size: 1rem;
+    font-weight: 500;
   }
 
   .role-dates {
     color: var(--muted);
     font-size: 0.8rem;
-    padding-top: 0.2rem;
-  }
-
-  .role-title {
-    font-size: 1.05rem;
-  }
-
-  .role-company {
-    color: var(--muted);
-    font-weight: 400;
-  }
-
-  .role-place {
-    color: var(--muted);
-    font-size: 0.85rem;
   }
 
   .role-summary {
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
     font-size: 0.95rem;
   }
 
   .subhead {
-    margin: 3rem 0 1rem;
+    margin: 3.5rem 0 1.25rem;
     font-family: var(--font-display);
     font-weight: 400;
     font-size: 1.6rem;
   }
 
-  .education li {
+  .education {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.25rem 1rem;
-    padding: 0.6rem 0;
-    border-top: 1px solid var(--border);
-    font-size: 0.95rem;
+    flex-direction: column;
+    gap: 1.25rem;
   }
 
-  .education strong {
-    font-weight: 500;
+  .education li {
+    align-items: center;
   }
 
-  .more {
-    margin-top: 1.75rem;
+  .edu-degree {
     font-weight: 500;
   }
 
@@ -380,19 +421,6 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
     flex-direction: column;
     gap: 1rem;
     font-size: 1.05rem;
-  }
-
-  /* Contact */
-  .contact-lead {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-    line-height: 1.15;
-    margin-bottom: 1.25rem;
-  }
-
-  .contact-email {
-    font-size: 1.1rem;
-    font-weight: 500;
   }
 
   .footer {
