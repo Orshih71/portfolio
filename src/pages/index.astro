@@ -133,9 +133,6 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
         </div>
       </section>
 
-      <footer class="footer">
-        <p>Built with Astro. Set in Instrument Serif and Geist.</p>
-      </footer>
     </main>
   </div>
 </Base>
@@ -423,11 +420,8 @@ const description = `${profile.name}, ${profile.title.toLowerCase()} in ${profil
     font-size: 1.05rem;
   }
 
-  .footer {
-    margin-top: 5rem;
-    padding: 2rem 0 3rem;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.8rem;
+  /* Breathing room after the last section, now that there's no footer. */
+  main {
+    padding-bottom: 5rem;
   }
 </style>
